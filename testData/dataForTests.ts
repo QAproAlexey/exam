@@ -14,6 +14,6 @@ export interface MemberForAPI {
 }
 
 export const credentialsForAPI: MemberForAPI = {
-  email: 'eve.holt@reqres.ino',
+  email: 'eve.holt@reqres.in',
   password: 'cityslicka',
 };
