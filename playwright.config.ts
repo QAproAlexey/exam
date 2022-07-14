@@ -14,7 +14,7 @@ const config: PlaywrightTestConfig = {
     baseURL: 'https://www.saucedemo.com/',
     browserName: 'chromium',
     viewport: { width: 1400, height: 700 },
-    headless: false,
+    headless: true,
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
     actionTimeout: 30000,
