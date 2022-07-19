@@ -1,22 +1,21 @@
 const {request, expect} = require('@playwright/test');
+const apiUrl: String = `https://reqres.in`;
 
-  export const tokenResponse = async (email: string, password: string) => {
-  const requestContext = await request.newContext();
-  const _response = await requestContext.post('https://reqres.in/api/login', {
-    data: {
-      'email': email,
-      'password': password,
-  }
+export const tokenResponse = async(email: string, password: string) => {
+const requestContext = await request.newContext();
+const _response = await requestContext.post(`${apiUrl}/api/login`, {
+data: {
+'email': email,
+'password': password,
+}
 });
 expect(_response.status()).toBe(200);
-expect(_response.ok()).toBeTruthy();
-console.log(await _response.json());
+return await _response.json().token
 };
 
-export const deleteUser = async () => {
-  const requestDelete = await request.newContext();
-  const _response = await requestDelete.delete('https://reqres.in/api/users/2', {
+export const deleteUser = async() => {
+const requestDelete = await request.newContext();
+const _response = await requestDelete.delete(`${apiUrl}/api/users/2`, {
 });
 expect(_response.status()).toBe(204);
-expect(_response.ok()).toBeTruthy();
 };
