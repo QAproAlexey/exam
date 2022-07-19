@@ -1,4 +1,4 @@
-import { Locator, Page, expect } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 
 export class Saucedemo {
 readonly page: Page;
@@ -29,6 +29,4 @@ await this.userNameField.fill(userNameForLogin);
 await this.passwordField.fill(passwordForLogin);
 await this.loginBtn.click();
 };
-
-
-}
+};
