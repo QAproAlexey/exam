@@ -1,32 +1,39 @@
 import { expect, test } from '@playwright/test';
 
-import { Saucedemo } from '../pageObjects/saucedemo';
+import { CartPage } from '../pageObjects/cartPage';
+import { LoginPage } from '../pageObjects/loginPage';
+import { SideMenu } from '../pageObjects/sideMenu';
 import { credentials } from '../testData/dataForTests';
 
-let saucedemo: Saucedemo;
-test.beforeEach(async( {page} ) => {
-saucedemo = new Saucedemo(page);
-await page.goto('/')
+let loginPage: LoginPage;
+let cartPage: CartPage;
+let sideMenu: SideMenu;
+
+test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
+    cartPage = new CartPage(page);
+    sideMenu = new SideMenu(page);
+    await page.goto('/')
 });
-test('Login With Valid Data', async() => {
-await saucedemo.loginWithValidData(credentials.userName, credentials.password);
-await expect(saucedemo.cartBtn).toBeVisible();
+test('Login With Valid Data', async () => {
+    await loginPage.loginWithValidData(credentials.userName, credentials.password);
+    await expect(cartPage.cartBtn).toBeVisible();
 });
 
-test.describe('2 tests: logout, add to card', async() => {
-test.beforeEach(async() => {
-await saucedemo.loginWithValidData(credentials.userName, credentials.password);
-});
+test.describe('2 tests: logout, add to card', async () => {
+    test.beforeEach(async () => {
+        await loginPage.loginWithValidData(credentials.userName, credentials.password);
+    });
 
-test('Logout', async() => {
-await saucedemo.sideMenuBtn.click();
-await saucedemo.logoutBtn.click();
-await expect(saucedemo.loginBtn).toBeVisible();
-});
+    test('Logout', async () => {
+        await sideMenu.clickOnTheSideMenu();
+        await sideMenu.clickBtnLogoutInSideMenu();
+        await expect(loginPage.loginBtn).toBeVisible();
+    });
 
-test('Adding Product In Cart', async() => {
-await saucedemo.addSauceLabsOnesieToCart.click();
-await saucedemo.cartBtn.click();
-await expect(saucedemo.checkAddedProductInCart).toBeVisible();
-});
+    test('Adding Product In Cart', async () => {
+        await cartPage.addProduct();
+        await cartPage.clickOnTheBtnCart();
+        await expect(cartPage.checkAddedProductInCart).toBeVisible();
+    });
 });
