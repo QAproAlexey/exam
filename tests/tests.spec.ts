@@ -1,37 +1,24 @@
-import { expect, test } from '@playwright/test';
-
-import { CartPage } from '../pageObjects/cartPage';
-import { LoginPage } from '../pageObjects/loginPage';
-import { SideMenu } from '../pageObjects/sideMenu';
 import { credentials } from '../testData/dataForTests';
+import { expect } from '@playwright/test';
+import { test } from '../fixtures/baseFixture';
 
-let loginPage: LoginPage;
-let cartPage: CartPage;
-let sideMenu: SideMenu;
-
-test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    cartPage = new CartPage(page);
-    sideMenu = new SideMenu(page);
-    await page.goto('/')
-});
-test('Login With Valid Data', async () => {
+test('Login With Valid Data', async ({ loginPage, cartPage }) => {
     await loginPage.loginWithValidData(credentials.userName, credentials.password);
     await expect(cartPage.cartBtn).toBeVisible();
 });
 
 test.describe('2 tests: logout, add to card', async () => {
-    test.beforeEach(async () => {
+    test.beforeEach(async ({ loginPage }) => {
         await loginPage.loginWithValidData(credentials.userName, credentials.password);
     });
 
-    test('Logout', async () => {
+    test('Logout', async ({ loginPage, sideMenu }) => {
         await sideMenu.clickOnTheSideMenu();
         await sideMenu.clickBtnLogoutInSideMenu();
         await expect(loginPage.loginBtn).toBeVisible();
     });
 
-    test('Adding Product In Cart', async () => {
+    test('Adding Product In Cart', async ({ cartPage }) => {
         await cartPage.addProduct();
         await cartPage.clickOnTheBtnCart();
         await expect(cartPage.checkAddedProductInCart).toBeVisible();
